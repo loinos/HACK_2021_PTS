@@ -1,4 +1,4 @@
-﻿git using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,12 +11,14 @@ namespace HACK_PTS
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
-        [STAThread]
+        //[STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            DBapi.Open("C://");
+            Console.WriteLine();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
         }
     }
 }

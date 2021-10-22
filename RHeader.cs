@@ -8,12 +8,13 @@ namespace HACK_PTS
 {
     class RHeader
     {
-        ulong id;
+        ulong hash;
         ushort size;
-        byte[] data;
-        public RHeader(ushort size)
+        public RHeader(ulong hash, ushort size)
         {
             this.size = size;
+            this.hash = hash;
         }
+
     }
 }
