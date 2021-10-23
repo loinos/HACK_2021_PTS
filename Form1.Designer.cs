@@ -221,6 +221,7 @@ namespace HACK_PTS
             this.button5.TabIndex = 18;
             this.button5.Text = "generate errors";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -230,6 +231,7 @@ namespace HACK_PTS
             this.button6.TabIndex = 19;
             this.button6.Text = "generate errors";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
