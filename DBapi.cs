@@ -7,68 +7,50 @@ using System.Threading.Tasks;
 
 namespace HACK_PTS
 {
-    static class DBapi
+     class DBapi
     {
-        static Database db;
-        public static void CreateNew(string path, string name)
+        private Database db;
+        string path;
+        public DBapi(string path)
         {
-            path = "C://t.ff";
-            try
-            {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate)))
-                {
-                    db = new Database();
-                    DBHeader dbh = db.GetDBHeader();
-                    writer.Write(DBHeader.GetIdentifier());
-                    writer.Write(dbh.GetSize());
-                }
-            } catch (Exception ex) { }
+            this.path = path;
+            db = new Database();
         }
-        public static void Open(string path)
+        public void CreateNew()
         {
-            path = "C://t.ff";
             try
             {
-                using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
+                using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
-                    if (reader.ReadInt16() != DBHeader.GetIdentifier())
-                    {
-                        return;
-                    }
-                    ulong size = reader.ReadUInt64();
-                    Database db = new Database();
-                    DBHeader dbh = new DBHeader(size);
+                    DBapiConverter.DBHeaderEncode(fs, db);
                 }
             }
             catch (Exception ex) { }
         }
-        public static void Add(string path, byte[] array)
+        public void Open()
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Open))
+                {
+                    DBapiConverter.DatabaseDecode(fs, db);
+                }
+            }
+            catch (Exception ex) { }
+        }
+        public void Add(byte[] array)
         {
             if (array.Length > 2000 || array.Length < 1)
             {
                 return;
             }
-            path = "C://t.ff";
             try
             {
-                using (FileStream fstream = new FileStream(path, FileMode.Open))
+                using (FileStream fs = new FileStream(path, FileMode.Open))
                 {
-                    byte[] idefeidentifier = new byte[2];
-                    fstream.Read(idefeidentifier, 0, 2);
-                    if (BitConverter.ToUInt16(idefeidentifier, 0) != DBHeader.IDENTIFIER)
-                    {
-                        throw new Exception("is not db file");
-                    }
-                    byte[] size_b = new byte[8];
-                    fstream.Read(idefeidentifier, 1, 8);
-                    ulong size = BitConverter.ToUInt64(idefeidentifier, 0);
-                    fstream.Seek(0, SeekOrigin.End);
-                    db.RIn(array);
-                    RHeader rh = db.GetLast().GetRHeader();
-                    byte[] b = rh.
-                    fstream.Write(array, 0, array.Length);
-                    fstream.Write(array, 0, array.Length);
-                    fstream.Write(array, 0, array.Length);
+                    Record r = new Record(db.GetDBHeader().GetSize(), array, true);
+                    DBapiConverter.DBEncodeAppend(fs, r);
+                    db.RIn(db.GetDBHeader().GetSize(), array);
                 }
             }
             catch (Exception ex) { }

@@ -16,8 +16,12 @@ int main() {
         a.push_back(rand() % 255);
     }
     dBapi.Add(a);
+    for (int i = 0; i < 100; ++i) {
+        a.push_back(rand() % 255);
+    }
+    dBapi.Add(a);
     dBapi.Open();
-    dBapi.Delete(1);
+    dBapi.Delete();
     return 0;
 }
 

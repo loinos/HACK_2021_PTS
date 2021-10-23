@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Database.cs" />
     <Compile Include="DBapi.cs" />
+    <Compile Include="DBapiConverter.cs" />
     <Compile Include="DBHeader.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

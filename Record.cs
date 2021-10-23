@@ -10,14 +10,21 @@ namespace HACK_PTS
     {
         private RHeader rh;
         byte[] data;
-        public Record(byte[] data)
+        public Record(ulong id, byte[] data, bool is_free)
         {
-            rh = new RHeader(sizeof(ulong) - 1, (ushort)data.Length);
+            rh = new RHeader(id, is_free, (ushort)data.Length);
             this.data = data;
         }
         public RHeader GetRHeader()
         {
             return rh;
         }
-    }
+        public byte this[int index]
+        {
+            get
+            {
+                return data[index];
+            }
+        }
+}
 }

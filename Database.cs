@@ -13,20 +13,26 @@ namespace HACK_PTS
         public Database()
         {
             dbh = new DBHeader(0);
-        }
-        public DBHeader GetDBHeader()
+            db = new List<Record>();
+
+    }
+    public DBHeader GetDBHeader()
         {
             return dbh;
         }
-        public void RIn(byte[] array) 
+        public void RIn(ulong id, byte[] array) 
         {
-            Record r = new Record(array);
+            Record r = new Record(id, array, false);
             db.Add(r);
         }
         public void ROut() { }
         public Record GetLast()
         {
             return db[db.Count - 1];
+        }
+        public List<Record> GetList()
+        {
+            return db;
         }
     }
 }

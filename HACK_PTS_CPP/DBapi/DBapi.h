@@ -11,7 +11,7 @@ public:
 
     }
     void CreateNew(){
-        std::ofstream new_db(path, std::ios::binary);
+        std::ofstream new_db(path, std::ios::binary | std::ios::trunc);
         if (new_db.is_open()){
             DBapiConverter::DBHeaderEncode(new_db, db->getDBHeader());
         }
@@ -22,6 +22,7 @@ public:
         if (new_db.is_open()){
             DBapiConverter::DatabaseDecode(new_db, db);
         }
+        new_db.close();
     }
     void Add(std::vector<unsigned char> data) {
         std::ofstream new_db(path, std::ios::binary | std::ios::app);
@@ -31,10 +32,10 @@ public:
         new_db.close();
     }
 
-    void Delete(uint16_t id){
-        std::ifstream new_db(path, std::ios::binary);
+    void Delete(){
+        std::ifstream new_db(path, std::ios::binary | std::ios::out);
         if (new_db.is_open()){
-            DBapiConverter::Find(new_db, id);
+            DBapiConverter::Find(new_db);
         }
         new_db.close();
     }

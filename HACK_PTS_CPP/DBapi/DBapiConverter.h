@@ -10,11 +10,8 @@ public:
         std::vector<Record> array = db->GetDb();
         for (auto r : array){
             RHeader *rh = r.getRHeader();
-            uint8_t id = rh->getId();
             uint16_t size = rh->getSize();
-            ofstream.write((char*)&id, sizeof(id));
             ofstream.write((char*)&size, sizeof(size));
-            ofstream << rh->getId() << rh->getSize();
             for (int i = 0; i < r.size(); ++i) {
                 unsigned char b = r[i];
                 ofstream.write((char*)&b, sizeof(b));
@@ -22,10 +19,8 @@ public:
         }
     }
     static void DBEncodeAppend(std::ofstream &ofstream, Record* r){
-        uint64_t id = r->getRHeader()->getId();
         uint16_t size = r->getRHeader()->getSize();
         bool is_free = r->getRHeader()->isFree();
-        ofstream.write((char*)&id, sizeof(id));
         ofstream.write((char*)&is_free, sizeof(is_free));
         ofstream.write((char*)&size, sizeof(size));
         for (int i = 0; i < r->size(); ++i) {
@@ -40,12 +35,10 @@ public:
         ifstream.read((char*)&size_, sizeof(size_));
         db->getDBHeader()->setSize(size_);
 
-        uint64_t id;
         bool is_free = true;
         uint16_t size;
         unsigned char b;
         while (!ifstream.eof()) {
-            ifstream.read((char*)&id, sizeof(id));
             ifstream.read((char*)&is_free, sizeof(is_free));
             ifstream.read((char*)&size, sizeof(size));
             std::vector<unsigned char> data;
@@ -53,17 +46,17 @@ public:
                 ifstream.read((char*)&b, sizeof(b));;
                 data.push_back(b);
             }
-            RHeader *rHeader = new RHeader(db->getDBHeader()->getSize(), size, is_free);
+            RHeader *rHeader = new RHeader(is_free, size);
             Record record(rHeader, data);
             db->RIn(record);
         }
     }
-    static uint64_t Find(std::ifstream &ifstream, int id){
+    ///////////////////
+    static uint64_t Find(std::ifstream &ifstream){
         uint64_t point = DBHeader::BASE_START;
         uint16_t size;
-        while (ifstream) {
+        while (!ifstream.eof()) {
             ifstream.read((char*)&point, sizeof(point));
-            if (point == id) return point;
             ifstream.seekg(point++);
             ifstream.read((char*)&size, sizeof(size));
             ifstream.seekg(point + size);
