@@ -11,9 +11,15 @@ public:
         this->data = data;
     }
     ~Record(){
-        delete rh;
+        //delete rh;
     }
     RHeader* getRHeader(){
         return rh;
+    }
+    int size(){
+        return data.size();
+    }
+    unsigned char operator[](int i){
+        return data[i];
     }
 };

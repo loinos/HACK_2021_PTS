@@ -11,20 +11,24 @@ public:
 
     }
     void CreateNew(){
-        std::ofstream new_db;
-        new_db.open(path);
+        std::ofstream new_db(path, std::ios::binary);
         if (new_db.is_open()){
             DBapiConverter::DBHeaderEncode(new_db, db->getDBHeader());
         }
         new_db.close();
     }
     void Open() {
-        std::ifstream new_db;
-        new_db.open(path);
+        std::ifstream new_db(path, std::ios::binary);
         if (new_db.is_open()){
             DBapiConverter::DatabaseDecode(new_db, db);
         }
     }
-    void Add();
+    void Add(std::vector<unsigned char> data) {
+        std::ofstream new_db(path, std::ios::binary | std::ios::app);
+        if (new_db.is_open()){
+            DBapiConverter::DBEncodeAppend(new_db, new Record(data));
+        }
+        new_db.close();
+    }
     void Delete();
 };

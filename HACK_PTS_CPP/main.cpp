@@ -10,9 +10,13 @@
 
 int main() {
     DBapi dBapi("test.ff");
+    std::vector<unsigned char> a;
     dBapi.CreateNew();
+    for (int i = 0; i < 100; ++i) {
+        a.push_back(rand() % 255);
+    }
+    dBapi.Add(a);
     dBapi.Open();
-    //dBapi.CreateNew();
     return 0;
 }
 
