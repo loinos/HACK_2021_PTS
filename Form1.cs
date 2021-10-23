@@ -117,7 +117,7 @@ namespace HACK_PTS
             }
             return bit_array;
         }
-        public BitArray HammingDecoder(BitArray bits)
+        public BitArray hammingDecoder(BitArray bits)
         {
             BitArray bit_array = new BitArray(21);
             bit_array = bits;
@@ -163,53 +163,48 @@ namespace HACK_PTS
 
             return ans;
         }
-        public static string ToBitString(BitArray bits)
+        static List<string> SplitString(string str)
         {
-            var sb = new StringBuilder();
-            for (int i = 0; i < bits.Count; i++)
+            List<string> list = new List<string>();
+            int i = 0;
+            while (i < str.Length - 1)
             {
-                char c = bits[i] ? '1' : '0';
-                sb.Append(c);
+                list.Add(str.Substring(i, 2));
+                i += 2;
             }
-            return sb.ToString();
+            return list;
         }
-
-        public List<BitArray> splitBitArray(BitArray bits)
+        public BitArray mainHammingCoder(string str)
         {
-            List<BitArray> ans = new List<BitArray>();
-
-            int h = bits.Length % 16;
-            BitArray bitarray = new BitArray(bits.Length + h);
-            for(int i =0; i < bits.Length; i++)
+            if(str.Length % 2 !=0)
             {
-                bitarray[i] = bits[i];
+                str += "\0";
             }
-            for(int i = 0;i<bitarray.Length; i += 16)
+            List<string> list_string = SplitString(str);
+            BitArray ans = new BitArray(list_string.Count*21);
+            int i = 0;
+            foreach(string str1 in list_string)
             {
-                BitArray b = new BitArray(16);
-                for(int j = 0; j<16; j++)
+                byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
+                BitArray bits = new BitArray(str_bin);
+                bits = addbit(bits);
+                for(int j = 0; j < bits.Length; j++)
                 {
-                    b[j] = bitarray[i+j];
+                    ans[i] = bits[j];
+                    i++;
                 }
-                ans.Add(b);
             }
-
             return ans;
         }
-         
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string str1 = richTextBox1.Text;
-            byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
-            BitArray bits = new BitArray(str_bin);
+            //string str1 = richTextBox1.Text;
+            //byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
+            //BitArray bits = new BitArray(str_bin);
+            //richTextBox2.Text = bitarraytoprint(addbit(bits));
 
-
-           
-
-
-            richTextBox2.Text = bitarraytoprint(addbit(bits));
-
+            richTextBox2.Text = bitarraytoprint(mainHammingCoder(richTextBox1.Text));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -234,7 +229,7 @@ namespace HACK_PTS
 
 
 
-            richTextBox1.Text = bitarraytoprint(HammingDecoder(bits));
+            richTextBox1.Text = bitarraytoprint(hammingDecoder(bits));
 
         }
     }
