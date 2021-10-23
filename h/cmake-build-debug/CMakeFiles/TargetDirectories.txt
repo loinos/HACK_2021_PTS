@@ -1,0 +1,3 @@
+C:/HACK_2021_PTS/h/cmake-build-debug/CMakeFiles/h.dir
+C:/HACK_2021_PTS/h/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/HACK_2021_PTS/h/cmake-build-debug/CMakeFiles/rebuild_cache.dir
