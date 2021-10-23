@@ -28,6 +28,31 @@ public:
             ofstream.write((char*)&b, sizeof(b));
         }
     }
+    static void DBEncodeRecord(std::ifstream &in, std::ofstream &out, Record* r){
+        in.seekg(DBHeader::BASE_START - 1);
+        uint16_t size;
+        bool is_free;
+        while (!in.eof()) {
+            in.read((char*)&is_free, sizeof(is_free));
+            if ()
+            ifstream.read((char*)&size, sizeof(size));
+            if (i < 0) {
+                unsigned char data[size];
+                ifstream.read((char*)&data, sizeof(data));
+                std::vector<unsigned char> v_data;
+                for (int j = 0; j < size; ++j) {
+                    v_data.push_back(data[j]);
+                }
+                Record* r = new Record(v_data);
+                return r;
+            }
+            ifstream.seekg(point + size);
+            for (int i = 0; i < r->size(); ++i) {
+                unsigned char b = (*r)[i];
+                ofstream.write((char*)&b, sizeof(b));
+            }
+        }
+    }
     static int DatabaseDecode(std::ifstream &ifstream, Database* &db){
         uint16_t identifier;
         ifstream.read((char*)&identifier, sizeof(identifier));
@@ -52,15 +77,26 @@ public:
         }
     }
     ///////////////////
-    static uint64_t Find(std::ifstream &ifstream){
-        uint64_t point = DBHeader::BASE_START;
+    static Record* Find(std::ifstream &ifstream, int i){
+        uint8_t point = 1;
+        ifstream.seekg(DBHeader::BASE_START - 1);
         uint16_t size;
         while (!ifstream.eof()) {
             ifstream.read((char*)&point, sizeof(point));
-            ifstream.seekg(point++);
             ifstream.read((char*)&size, sizeof(size));
+            if (i < 0) {
+                unsigned char data[size];
+                ifstream.read((char*)&data, sizeof(data));
+                std::vector<unsigned char> v_data;
+                for (int j = 0; j < size; ++j) {
+                    v_data.push_back(data[j]);
+                }
+                Record* r = new Record(v_data);
+                return r;
+            }
             ifstream.seekg(point + size);
         }
+        return nullptr;
     }
     static uint64_t FindFree(std::ifstream &ifstream, int r_size){
         uint64_t point = DBHeader::BASE_START;

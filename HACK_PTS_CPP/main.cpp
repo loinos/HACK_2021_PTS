@@ -21,7 +21,7 @@ int main() {
     }
     dBapi.Add(a);
     dBapi.Open();
-    dBapi.Delete();
+    dBapi.Delete(2);
     return 0;
 }
 
