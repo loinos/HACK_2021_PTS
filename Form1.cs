@@ -196,6 +196,28 @@ namespace HACK_PTS
             }
             return ans;
         }
+        public BitArray mainHammingEncoder(BitArray bits)
+        {
+            BitArray ans = new BitArray((bits.Length / 21) * 16);
+            int j = 0;
+            int ans_index = 0;
+            for(int i = 0; i < bits.Length / 21; i++)
+            {
+                BitArray b = new BitArray(21);
+                for(int k = 0; k< 21; k++)
+                {
+                    b[k] = bits[j];
+                    j++;
+                }
+                b = hammingDecoder(b);
+                for(int l = 0; l < 16; l++)
+                {
+                    ans[ans_index] = b[l];
+                    ans_index++;
+                }
+            }
+            return ans;
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -204,7 +226,7 @@ namespace HACK_PTS
             //BitArray bits = new BitArray(str_bin);
             //richTextBox2.Text = bitarraytoprint(addbit(bits));
 
-            richTextBox2.Text = bitarraytoprint(mainHammingCoder(richTextBox1.Text));
+            richTextBox2.Text = bitarraytoprint(mainHammingEncoder(mainHammingCoder(richTextBox1.Text)));
         }
 
         private void button2_Click(object sender, EventArgs e)
