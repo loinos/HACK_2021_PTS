@@ -38,8 +38,8 @@ public:
         bool is_free = true;
         uint16_t size;
         unsigned char b;
-        while (!ifstream.eof()) {
-            ifstream.read((char*)&is_free, sizeof(is_free));
+        while (ifstream.read((char*)&is_free, sizeof(is_free))) {
+            //ifstream.read((char*)&is_free, sizeof(is_free));
             ifstream.read((char*)&size, sizeof(size));
             std::vector<unsigned char> data;
             for (int i = 0; i < size; ++i) {
