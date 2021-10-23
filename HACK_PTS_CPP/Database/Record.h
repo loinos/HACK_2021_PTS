@@ -3,11 +3,11 @@ class Record {
     std::vector<unsigned char> data;
 public:
     Record(const std::vector<unsigned char>& data) {
-        rh = new RHeader(1, data.size());
+        rh = new RHeader(1, data.size(), false);
         this->data = data;
     }
     Record(RHeader *rh, const std::vector<unsigned char>& data) {
-        rh = new RHeader(1, data.size());
+        this->rh = rh;
         this->data = data;
     }
     ~Record(){
@@ -22,4 +22,5 @@ public:
     unsigned char operator[](int i){
         return data[i];
     }
+    friend class Database;
 };

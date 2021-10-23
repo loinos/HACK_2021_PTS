@@ -30,5 +30,13 @@ public:
         }
         new_db.close();
     }
-    void Delete();
+
+    void Delete(uint16_t id){
+        std::ifstream new_db(path, std::ios::binary);
+        if (new_db.is_open()){
+            DBapiConverter::Find(new_db, id);
+        }
+        new_db.close();
+    }
+    void Change();
 };

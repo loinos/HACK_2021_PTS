@@ -9,9 +9,11 @@ public:
     ~Database(){
         delete dbh;
     }
+
     DBHeader** GetDBHeader(){
         return &dbh;
     }
+
     std::vector<Record> GetDb(){
         return db;
     }
