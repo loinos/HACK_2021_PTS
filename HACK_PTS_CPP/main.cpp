@@ -15,7 +15,13 @@ int main() {
     for (int i = 0; i < 100; ++i) {
         a.push_back(rand() % 255);
     }
-    int p = dBapi.Add_2(a);
+    dBapi.Add_2(a);
+    dBapi.Add_2(a);
+    //dBapi.Add(a);
+    std::vector<unsigned int> b;
+    //dBapi.Change(1, b);
+    dBapi.Delete(1);
+
     for (int i = 0; i < 100; ++i) {
         a.push_back(rand() % 255);
     }

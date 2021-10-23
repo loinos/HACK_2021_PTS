@@ -1,5 +1,6 @@
 class DBapiConverter {
 public:
+    ///
     static void DBHeaderEncode(std::ofstream &ofstream, DBHeader* dbh){
         uint64_t size = dbh->getSize();
         uint16_t identifier = DBHeader::IDENTIFIER;
@@ -18,7 +19,8 @@ public:
             }
         }
     }
-    static void DBEncodeAppend(std::ofstream &ofstream, Record* r){
+    ///
+    static int DBEncodeAppend(std::ofstream &ofstream, Record* r){
         uint16_t size = r->getRHeader()->getSize();
         bool is_free = r->getRHeader()->isFree();
         ofstream.write((char*)&is_free, sizeof(is_free));
@@ -29,21 +31,22 @@ public:
         }
     }
 
-    static int DBEncodeRecord(std::ifstream &in, std::ofstream &out, std::string path, Record* r){
-        in.seekg(DBHeader::BASE_START - 1);
-        uint16_t size;
-        bool is_free;
+    static int DBEncodeRecord(std::ifstream &in, std::string path, Record* r){
+        in.seekg(DBHeader::BASE_START);
+        uint16_t size = 2000;
+        bool is_free = false;
         int i = 0;
-        while (!out.eof()) {
-            in.read((char*)&is_free, sizeof(is_free));
+        while (in.read((char*)&is_free, sizeof(is_free))) {
+            //in.read((char*)&is_free, sizeof(is_free));
             in.read((char*)&size, sizeof(size));
-            if (is_free){
-                in.seekg(size);
+            if (is_free != 0){
+                in.seekg(size + 1);
                 ++i;
+                continue;
             }
-            if (r->size() < size) {
+            if (r->getRHeader()->getSize() < size) {
                 in.close();
-                out.open(path);
+                std::ofstream out(path);
                 for (int i = 0; i < r->size(); ++i) {
                     unsigned char b = (*r)[i];
                     out.write((char*)&b, sizeof(b));
@@ -51,10 +54,15 @@ public:
                 out.close();
                 return i;
             }
-            in.seekg(size);
+            in.seekg(size + 1);
             ++i;
         }
+        std::ofstream out(path);
+        DBEncodeAppend(out, r);
+        out.close();
+        return i;
     }
+    ///
     static int DatabaseDecode(std::ifstream &ifstream, Database* &db){
         uint16_t identifier;
         ifstream.read((char*)&identifier, sizeof(identifier));
@@ -81,7 +89,7 @@ public:
     ///////////////////
     static Record* Find(std::ifstream &ifstream, int i){
         uint8_t point = 1;
-        ifstream.seekg(DBHeader::BASE_START - 1);
+        ifstream.seekg(DBHeader::BASE_START);
         uint16_t size;
         while (!ifstream.eof()) {
             ifstream.read((char*)&point, sizeof(point));
@@ -100,19 +108,32 @@ public:
         }
         return nullptr;
     }
-    static uint64_t FindFree(std::ifstream &ifstream, int r_size){
-        uint64_t point = DBHeader::BASE_START;
-        bool is_free = true;
-        uint16_t size;
+    static void Delete(std::ifstream &ifstream, std::string path, int i){
+        uint8_t point = 1;
         ifstream.seekg(DBHeader::BASE_START);
-        while (ifstream) {
-            ifstream.read((char*)&point, sizeof(point));
-            ifstream.read((char*)&is_free, sizeof(is_free));
+        uint16_t size;
+        int j = 0;
+        uint64_t pos = DBHeader::BASE_START;
+        while (ifstream.read((char*)&point, sizeof(point))) {
+            //ifstream.read((char*)&point, sizeof(point));
             ifstream.read((char*)&size, sizeof(size));
-            if (is_free && size > r_size) {
-                return point;
+            if (i == j) {
+                ifstream.close();
+                std::ofstream out(path);
+
+                out.seekp(pos);
+                char b = 0;
+                out.write((char*)&b, sizeof(b));
+                out.seekp(sizeof(size));
+                for (int k = 0; k < size; ++k) {
+                    out.write((char*)&b, sizeof(b));
+                }
+                out.close();
+                break;
             }
             ifstream.seekg(point + size);
+            pos += point + size;
+            ++j;
         }
     }
 

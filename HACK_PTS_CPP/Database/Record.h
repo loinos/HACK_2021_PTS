@@ -4,7 +4,7 @@ class Record {
 public:
     Record(const std::vector<unsigned char>& data) {
         this->data = data;
-        rh = new RHeader(true, data.size());
+        rh = new RHeader(false, data.size());
     }
     Record(RHeader *rh, const std::vector<unsigned char>& data) {
         this->rh = rh;

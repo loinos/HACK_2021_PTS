@@ -1,7 +1,7 @@
 class DBHeader {
     uint64_t size;
 public:
-    static const uint64_t BASE_START = 11;
+    static const uint64_t BASE_START = 10;
     static const uint16_t IDENTIFIER = 24565;
     DBHeader(uint64_t size){
         this->size = size;

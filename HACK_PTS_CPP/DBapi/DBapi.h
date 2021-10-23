@@ -32,19 +32,24 @@ public:
         new_db.close();
     }
     int Add_2(std::vector<unsigned char> data) {
-        std::ofstream out(path, std::ios::binary | std::ios::out);
-        std::ifstream in;
-        if (out.is_open()){
-            return DBapiConverter::DBEncodeRecord(in, out,path, new Record(data));
+        std::ifstream in(path, std::ios::binary | std::ios::out);
+        if (in.is_open()){
+            return DBapiConverter::DBEncodeRecord(in, path, new Record(data));
         }
-        out.close();
+        in.close();
     }
     void Delete(uint64_t id){
+        std::ifstream new_db(path, std::ios::binary | std::ios::out);
+        if (new_db.is_open()){
+            DBapiConverter::Delete(new_db, path, id);
+        }
+        new_db.close();
+    }
+    void Change(uint64_t id, std::vector<unsigned int> array){
         std::ifstream new_db(path, std::ios::binary | std::ios::out);
         if (new_db.is_open()){
             DBapiConverter::Find(new_db, id);
         }
         new_db.close();
     }
-    void Change();
 };
