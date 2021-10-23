@@ -173,13 +173,38 @@ namespace HACK_PTS
             }
             return sb.ToString();
         }
+
+        public List<BitArray> splitBitArray(BitArray bits)
+        {
+            List<BitArray> ans = new List<BitArray>();
+
+            int h = bits.Length % 16;
+            BitArray bitarray = new BitArray(bits.Length + h);
+            for(int i =0; i < bits.Length; i++)
+            {
+                bitarray[i] = bits[i];
+            }
+            for(int i = 0;i<bitarray.Length; i += 16)
+            {
+                BitArray b = new BitArray(16);
+                for(int j = 0; j<16; j++)
+                {
+                    b[j] = bitarray[i+j];
+                }
+                ans.Add(b);
+            }
+
+            return ans;
+        }
+         
+
         private void button1_Click(object sender, EventArgs e)
         {
             string str1 = richTextBox1.Text;
             byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
             BitArray bits = new BitArray(str_bin);
 
-            //код хемминга
+
            
 
 
