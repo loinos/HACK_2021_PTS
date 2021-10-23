@@ -338,3 +338,8 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+/HACK_PTS_CPP/.idea
+/HACK_PTS_CPP/cmake-build-debug
+/HACK_PTS_CPP/CMakeLists.txt
+/.gitignore

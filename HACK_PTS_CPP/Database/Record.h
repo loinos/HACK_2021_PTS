@@ -6,6 +6,10 @@ public:
         rh = new RHeader(1, data.size());
         this->data = data;
     }
+    Record(RHeader *rh, const std::vector<unsigned char>& data) {
+        rh = new RHeader(1, data.size());
+        this->data = data;
+    }
     ~Record(){
         delete rh;
     }

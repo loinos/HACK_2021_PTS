@@ -6,4 +6,10 @@ public:
         this->hash = hash;
         this->size = size;
     }
+    uint64_t getHash(){
+        return hash;
+    }
+    uint16_t getSize(){
+        return size;
+    }
 };

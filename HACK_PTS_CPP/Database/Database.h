@@ -9,9 +9,17 @@ public:
     ~Database(){
         delete dbh;
     }
-    void RIn(std::vector<unsigned char> array){
-        Record r(array);
+    DBHeader** GetDBHeader(){
+        return &dbh;
+    }
+    std::vector<Record> GetDb(){
+        return db;
+    }
+    void RIn(const Record& r){
         db.push_back(r);
     }
     void ROut();
+    DBHeader* getDBHeader(){
+        return dbh;
+    }
 };
