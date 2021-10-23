@@ -15,11 +15,11 @@ int main() {
     for (int i = 0; i < 100; ++i) {
         a.push_back(rand() % 255);
     }
-    dBapi.Add(a);
+    int p = dBapi.Add_2(a);
     for (int i = 0; i < 100; ++i) {
         a.push_back(rand() % 255);
     }
-    dBapi.Add(a);
+    int o = dBapi.Add_2(a);
     dBapi.Open();
     dBapi.Delete(2);
     return 0;

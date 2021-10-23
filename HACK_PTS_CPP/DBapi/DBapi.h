@@ -31,11 +31,11 @@ public:
         }
         new_db.close();
     }
-    void Add_2(std::vector<unsigned char> data) {
-        std::ofstream out(path, std::ios::binary);
-        std::ifstream in(path, std::ios::binary);
-        if (in.is_open()){
-            DBapiConverter::DBEncodeRecord(in, out, new Record(data));
+    int Add_2(std::vector<unsigned char> data) {
+        std::ofstream out(path, std::ios::binary | std::ios::out);
+        std::ifstream in;
+        if (out.is_open()){
+            return DBapiConverter::DBEncodeRecord(in, out,path, new Record(data));
         }
         out.close();
     }

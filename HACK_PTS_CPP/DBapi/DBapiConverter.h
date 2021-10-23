@@ -28,29 +28,31 @@ public:
             ofstream.write((char*)&b, sizeof(b));
         }
     }
-    static void DBEncodeRecord(std::ifstream &in, std::ofstream &out, Record* r){
+
+    static int DBEncodeRecord(std::ifstream &in, std::ofstream &out, std::string path, Record* r){
         in.seekg(DBHeader::BASE_START - 1);
         uint16_t size;
         bool is_free;
-        while (!in.eof()) {
+        int i = 0;
+        while (!out.eof()) {
             in.read((char*)&is_free, sizeof(is_free));
-            if ()
-            ifstream.read((char*)&size, sizeof(size));
-            if (i < 0) {
-                unsigned char data[size];
-                ifstream.read((char*)&data, sizeof(data));
-                std::vector<unsigned char> v_data;
-                for (int j = 0; j < size; ++j) {
-                    v_data.push_back(data[j]);
+            in.read((char*)&size, sizeof(size));
+            if (is_free){
+                in.seekg(size);
+                ++i;
+            }
+            if (r->size() < size) {
+                in.close();
+                out.open(path);
+                for (int i = 0; i < r->size(); ++i) {
+                    unsigned char b = (*r)[i];
+                    out.write((char*)&b, sizeof(b));
                 }
-                Record* r = new Record(v_data);
-                return r;
+                out.close();
+                return i;
             }
-            ifstream.seekg(point + size);
-            for (int i = 0; i < r->size(); ++i) {
-                unsigned char b = (*r)[i];
-                ofstream.write((char*)&b, sizeof(b));
-            }
+            in.seekg(size);
+            ++i;
         }
     }
     static int DatabaseDecode(std::ifstream &ifstream, Database* &db){
