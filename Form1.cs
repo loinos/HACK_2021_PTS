@@ -134,10 +134,10 @@ namespace HACK_PTS
             }
             bit_array = addbit(bans);
 
-            int index_of_error = -1;
+            int index_of_error = 0;
             if(bits[0] != bit_array[0])
             {
-                index_of_error+=2;
+                index_of_error++;
             }
             for (int i = 2;i< 21; i=i*2)
             {
@@ -146,7 +146,7 @@ namespace HACK_PTS
                     index_of_error += i;
                 }
             }
-            if (index_of_error != -1)
+            if (index_of_error != 0)
             {
                 bit_array[index_of_error - 1] = !bit_array[index_of_error - 1];
             }
@@ -185,7 +185,7 @@ namespace HACK_PTS
             int i = 0;
             foreach(string str1 in list_string)
             {
-                byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
+                byte[] str_bin = System.Text.Encoding.ASCII.GetBytes(str1);
                 BitArray bits = new BitArray(str_bin);
                 bits = addbit(bits);
                 for(int j = 0; j < bits.Length; j++)
@@ -218,6 +218,60 @@ namespace HACK_PTS
             }
             return ans;
         }
+        public BitArray GenerateBitArrayFromString(string str)
+        {
+            BitArray ans = new BitArray(str.Length);
+            for(int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == '1')
+                {
+                    ans[i] = true;
+                }
+                else
+                {
+                    ans[i] = false;
+                }
+            }
+            return ans;
+        }
+        public string generatestring(BitArray bitss)
+        {
+            BitArray bits = new BitArray(bitss.Length + bitss.Length % 8); 
+            for(int i = 0; i < bitss.Length; i++)
+            {
+                bits[i] = bitss[i];
+            }
+            string ans = "";
+            for(int i = 0; i < bits.Length;)
+            {
+                int sum = 0;
+                for (int k = 7; k > -1; k--)
+                {
+                    
+                    if (i<bits.Length && bits[i])
+                    {
+                        sum += Convert.ToInt32(2 * Math.Pow(2.0, k));
+                    }
+                    i++;
+                }
+                
+                ans += Convert.ToString(Convert.ToChar(sum));
+            }
+
+
+            return ans;
+        }
+        
+        public BitArray setErrors(BitArray bits)
+        {
+            Random r = new Random();
+            int index = r.Next(0, 21);
+            for (int i = index; i < bits.Length; i += 21)
+            {
+                bits[i] = !bits[i];
+            }
+            return bits;
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -226,6 +280,26 @@ namespace HACK_PTS
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            BitArray bits = GenerateBitArrayFromString(richTextBox1.Text);
+            bits = setErrors(bits);
+            richTextBox1.Text = bitarraytoprint(bits);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            BitArray bits1 = GenerateBitArrayFromString(richTextBox1.Text);
+            richTextBox1.Text = generatestring(bits1);
+
 
         }
 
