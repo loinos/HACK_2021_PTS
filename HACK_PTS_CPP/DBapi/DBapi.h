@@ -45,7 +45,7 @@ public:
         }
         new_db.close();
     }
-    void Change(uint64_t id, std::vector<unsigned int> array){
+    void Change(uint64_t id, std::vector<unsigned char> array){
         std::ifstream new_db(path, std::ios::binary | std::ios::out);
         if (new_db.is_open()){
             DBapiConverter::Find(new_db, id);
