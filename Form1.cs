@@ -219,40 +219,52 @@ namespace HACK_PTS
             return ans;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            //string str1 = richTextBox1.Text;
-            //byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
-            //BitArray bits = new BitArray(str_bin);
-            //richTextBox2.Text = bitarraytoprint(addbit(bits));
 
-            richTextBox2.Text = bitarraytoprint(mainHammingEncoder(mainHammingCoder(richTextBox1.Text)));
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-            string str1 = richTextBox2.Text;
-            //byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
-            BitArray bits = new BitArray(str1.Length);
-            for (int i = 0; i < str1.Length; i++)
-            {
-                if (str1[i] == '1')
-                {
-                    bits[i] = true;
-                }
-                else
-                {
-                    bits[i] = false;
-                }
-            }
-            
-
-            //код хемминга
-
-
-
-            richTextBox1.Text = bitarraytoprint(hammingDecoder(bits));
 
         }
+
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    //string str1 = richTextBox1.Text;
+        //    //byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
+        //    //BitArray bits = new BitArray(str_bin);
+        //    //richTextBox2.Text = bitarraytoprint(addbit(bits));
+
+        //    //richTextBox2.Text = bitarraytoprint(mainHammingEncoder(mainHammingCoder(richTextBox1.Text)));
+        //}
+
+        //private void button2_Click(object sender, EventArgs e)
+        //{
+        //    string str1 = richTextBox2.Text;
+        //    //byte[] str_bin = System.Text.Encoding.UTF8.GetBytes(str1);
+        //    BitArray bits = new BitArray(str1.Length);
+        //    for (int i = 0; i < str1.Length; i++)
+        //    {
+        //        if (str1[i] == '1')
+        //        {
+        //            bits[i] = true;
+        //        }
+        //        else
+        //        {
+        //            bits[i] = false;
+        //        }
+        //    }
+
+
+        //    //код хемминга
+
+
+
+        //    richTextBox1.Text = bitarraytoprint(hammingDecoder(bits));
+
+        //}
+
+
     }
 }
