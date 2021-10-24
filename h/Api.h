@@ -63,6 +63,9 @@ public:
                 if (size < c_size) {
                     return FillBlock(iof, array, size, id);
                 }
+
+            // Пропустить блок данных
+            iof.seekg(c_size);
         }
 
         // Если конец фаила - аппенд
@@ -96,8 +99,41 @@ public:
 
         return -1;
     }
-    void Update(uint64_t id){
+    void Update(uint64_t id, unsigned char array[], uint64_t size){
+        std::fstream iof(path, std::ios::binary | std::ios::in | std::ios::out);
+        iof.seekp(Database::HEADER, std::ios_base::beg);
 
+        uint64_t c_id = 0;
+        uint16_t fill = 1;
+        uint64_t c_size = size;
+
+        while (iof.eof()) {
+
+            iof.read((char*)&id, sizeof(id));
+
+            // Если нужная запись - обнуляем
+            // Меняем флаг заполненности на пусто
+            if (c_id == id) {
+
+                // Филлер, чтобы убить флаг
+                uint16_t filler = 0;
+                iof.write((char*)&filler, sizeof(filler));
+
+                // Сдвиг каретки и филлер для убийства битов
+                // А я не знаю как по другому
+                iof.read((char*)&c_size, sizeof(c_size));
+                uint8_t b = 0;
+                for (int i = 0; i < c_size; ++i) {
+                    iof.write((char*)&b, sizeof(b));
+                }
+                return;
+            }
+
+            iof.read((char*)&fill, sizeof(fill));
+            iof.read((char*)&c_size, sizeof(c_size));
+
+            iof.seekg(c_size);
+        }
     }
     void Delete(uint64_t id){
 
