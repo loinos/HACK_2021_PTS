@@ -116,6 +116,48 @@ public:
             if (c_id == id) {
 
                 // Филлер, чтобы убить флаг
+                //uint16_t filler = 0;
+                //iof.write((char*)&filler, sizeof(filler));
+
+                // Сдвиг каретки и филлер для убийства битов
+                // А я не знаю как по другому
+                iof.read((char*)&fill, sizeof(fill));
+                iof.read((char*)&c_size, sizeof(c_size));
+                uint8_t b = 0;
+                for (int i = 0; i < c_size; ++i) {
+                    if (i < size) iof.write((char*)&(array[i]), sizeof(array[i]));
+                    else iof.write((char*)&b, sizeof(b);
+                }
+
+
+
+
+                return;
+            }
+
+            iof.read((char*)&fill, sizeof(fill));
+            iof.read((char*)&c_size, sizeof(c_size));
+
+            iof.seekg(c_size);
+        }
+    }
+    void Delete(uint64_t id){
+        std::fstream iof(path, std::ios::binary | std::ios::in | std::ios::out);
+        iof.seekp(Database::HEADER, std::ios_base::beg);
+
+        uint64_t c_id = 0;
+        uint16_t fill = 1;
+        uint64_t c_size = 0;
+
+        while (iof.eof()) {
+
+            iof.read((char*)&id, sizeof(id));
+
+            // Если нужная запись - обнуляем
+            // Меняем флаг заполненности на пусто
+            if (c_id == id) {
+
+                // Филлер, чтобы убить флаг
                 uint16_t filler = 0;
                 iof.write((char*)&filler, sizeof(filler));
 
@@ -134,8 +176,5 @@ public:
 
             iof.seekg(c_size);
         }
-    }
-    void Delete(uint64_t id){
-
     }
 };
