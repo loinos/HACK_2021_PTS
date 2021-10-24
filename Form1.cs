@@ -248,7 +248,220 @@ namespace HACK_PTS
 
             return ans;
         }
+        public List<BitArray> CodingToWrite(BitArray input_bits)
+        {
+            int block_len = input_bits.Length / 3;
+            List<BitArray> ans = new List<BitArray>();
+            BitArray b1 = new BitArray(block_len);
+            BitArray b2 = new BitArray(block_len);
+            BitArray b3 = new BitArray(block_len);
 
+            int index_in_input_bits = 0;
+            for(int i = 0; i < block_len; i++)
+            {
+                b1[i] = input_bits[index_in_input_bits + i];
+            }
+            index_in_input_bits += block_len;
+            for(int i = 0; i < block_len; i++)
+            {
+                b2[i] = input_bits[index_in_input_bits + i];
+            }
+            index_in_input_bits += block_len;
+            for (int i = 0; i < block_len; i++)
+            {
+                b3[i] = input_bits[index_in_input_bits + i];
+            }
+            b1 = hammingCoder(b1);
+            b2 = hammingCoder(b2);
+            b3 = hammingCoder(b3);
+            ans.Add(b1);
+            ans.Add(b2);
+            ans.Add(b3);
+            return ans;
+        }
+
+        public BitArray case0(BitArray input_bits)
+        {
+            int block_len = input_bits.Length / 3;
+            BitArray b1 = new BitArray(block_len);
+            BitArray b2 = new BitArray(block_len);
+            BitArray b3 = new BitArray(block_len);
+            int index_in_input_bits = 0;
+            for (int i = 0; i < block_len; i++)
+            {
+                b1[i] = input_bits[index_in_input_bits + i];
+            }
+            index_in_input_bits += block_len;
+            for (int i = 0; i < block_len; i++)
+            {
+                b2[i] = input_bits[index_in_input_bits + i];
+            }
+            b1 = hammincDecoder(b1);
+            b2 = hammincDecoder(b2);
+            BitArray ans = new BitArray(b1.Length + b2.Length);
+            int index_in_ans = 0;
+            foreach (bool item in b1)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            foreach (bool item in b2)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            return ans;
+        }
+        public BitArray case3(BitArray input_bits)
+        {
+            int block_len = input_bits.Length / 2;
+            BitArray b1 = new BitArray(block_len);
+            BitArray b2 = new BitArray(block_len);
+            int index_in_input_bits = 0;
+            for (int i = 0; i < block_len; i++)
+            {
+                b1[i] = input_bits[index_in_input_bits + i];
+            }
+            index_in_input_bits += block_len;
+            for (int i = 0; i < block_len; i++)
+            {
+                b2[i] = input_bits[index_in_input_bits + i];
+            }
+            b1 = hammincDecoder(b1);
+            b2 = hammincDecoder(b2);
+            BitArray ans = new BitArray(b1.Length + b2.Length);
+            int index_in_ans = 0;
+            foreach (bool item in b1)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            foreach (bool item in b2)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            return ans;
+        }
+        public BitArray case1(BitArray input_bits)
+        {
+            int block_len = input_bits.Length / 2;
+            BitArray b2 = new BitArray(block_len);
+            BitArray b3 = new BitArray(block_len);
+            int index_in_input_bits = 0;
+            for (int i = 0; i < block_len; i++)
+            {
+                b2[i] = input_bits[index_in_input_bits + i];
+            }
+            index_in_input_bits += block_len;
+            for (int i = 0; i < block_len; i++)
+            {
+                b3[i] = input_bits[index_in_input_bits + i];
+            }
+            b2 = hammincDecoder(b2);
+            b3 = hammincDecoder(b3);
+            BitArray b1 = new BitArray(b2.Length);
+            for(int i = 0; i< b3.Length; i++)
+            {
+                if (b3[i])
+                {
+                    b1[i] = !b2[i];
+                }
+                else
+                {
+                    b1[i] = b2[i];
+                }
+            }
+            BitArray ans = new BitArray(b1.Length + b2.Length);
+            int index_in_ans = 0;
+            foreach (bool item in b1)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            foreach (bool item in b2)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            return ans;
+        }
+        public BitArray case2(BitArray input_bits)
+        {
+            int block_len = input_bits.Length / 2;
+            BitArray b1 = new BitArray(block_len);
+            BitArray b3 = new BitArray(block_len);
+            int index_in_input_bits = 0;
+            for (int i = 0; i < block_len; i++)
+            {
+                b1[i] = input_bits[index_in_input_bits + i];
+            }
+            index_in_input_bits += block_len;
+            for (int i = 0; i < block_len; i++)
+            {
+                b3[i] = input_bits[index_in_input_bits + i];
+            }
+            b1 = hammincDecoder(b1);
+            b3 = hammincDecoder(b3);
+            BitArray b2 = new BitArray(b1.Length);
+            for (int i = 0; i < b3.Length; i++)
+            {
+                if (b3[i])
+                {
+                    b2[i] = !b1[i];
+                }
+                else
+                {
+                    b2[i] = b1[i];
+                }
+            }
+            BitArray ans = new BitArray(b1.Length + b2.Length);
+            int index_in_ans = 0;
+            foreach (bool item in b1)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            foreach (bool item in b2)
+            {
+                ans[index_in_ans] = item;
+                index_in_ans++;
+            }
+            return ans;
+        }
+        public BitArray fromRead(BitArray input_bits,int errorcoder =0)
+        {
+            switch (errorcoder)
+            {
+                case 0:
+                    return case0(input_bits);
+                    break;
+                case 1:
+                    return case1(input_bits);
+                    break;
+                case 2:
+                    return case2(input_bits);
+                    break;
+                case 3:
+                    return case3(input_bits);
+                    break;
+                default:
+                    return case0(input_bits);
+                    break;
+            }
+        }
+        public byte[] bitArrayConvertor(BitArray input_bits)
+        {
+            BitArray a = new BitArray(input_bits.Length + (input_bits.Length & 8));
+            for(int i = 0; i < input_bits.Length; i++)
+            {
+                a[i] = input_bits[i];
+            }
+            byte[] bytes = new byte[a.Length / 8];
+            a.CopyTo(bytes, 0);
+            //Array.Reverse(bytes);
+            return bytes;
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -273,6 +486,7 @@ namespace HACK_PTS
         {
             byte[] str_bin = System.Text.Encoding.UTF8.GetBytes("konlox");
             BitArray bits = new BitArray(str_bin);
+            byte[] bytes = bitArrayConvertor(bits);
             richTextBox2.Text = bitarraytoprint(bits);
             richTextBox1.Text = bitarraytoprint(hammincDecoder(hammingCoder(bits)));
         }
