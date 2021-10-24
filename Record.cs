@@ -8,23 +8,18 @@ namespace HACK_PTS
 {
     class Record
     {
-        private RHeader rh;
         byte[] data;
-        public Record(ulong id, byte[] data, bool is_free)
+        ushort fill;
+
+        public const ushort HEADER = 14;
+        public Record(byte[] data)
         {
-            rh = new RHeader(id, is_free, (ushort)data.Length);
             this.data = data;
         }
-        public RHeader GetRHeader()
+        public byte[] GetData()
         {
-            return rh;
+            return data;
         }
-        public byte this[int index]
-        {
-            get
-            {
-                return data[index];
-            }
-        }
-}
+    }
+};
 }

@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/HACK_2021_PTS/h/Api.h
+
+C:/HACK_2021_PTS/h/Database.h
+
+C:/HACK_2021_PTS/h/Record.h
+utility
+-
+
+C:/HACK_2021_PTS/h/main.cpp
+iostream
+-
+vector
+-
+fstream
+-
+Record.h
+C:/HACK_2021_PTS/h/Record.h
+Database.h
+C:/HACK_2021_PTS/h/Database.h
+Api.h
+C:/HACK_2021_PTS/h/Api.h
+

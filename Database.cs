@@ -8,31 +8,13 @@ namespace HACK_PTS
 {
     class Database
     {
-        private DBHeader dbh;
-        private List<Record> db;
-        public Database()
+        List<Record> data;
+        public const ushort IDENTIFICATION = 24565;
+        public const ushort HEADER = 12;
+        
+        Database()
         {
-            dbh = new DBHeader(0);
-            db = new List<Record>();
-
-    }
-    public DBHeader GetDBHeader()
-        {
-            return dbh;
+            data = new List<Record>();
         }
-        public void RIn(ulong id, byte[] array) 
-        {
-            Record r = new Record(id, array, false);
-            db.Add(r);
-        }
-        public void ROut() { }
-        public Record GetLast()
-        {
-            return db[db.Count - 1];
-        }
-        public List<Record> GetList()
-        {
-            return db;
-        }
-    }
+    };
 }

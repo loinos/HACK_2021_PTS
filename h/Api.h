@@ -36,7 +36,7 @@ public:
     }
     int Set(unsigned char array[], int size){
         std::fstream iof(path, std::ios::binary | std::ios::out | std::ios::in);
-        iof.seekp(Database::HEADER, std::ios_base::beg);
+        iof.seekp(Database::HEADER - 1, std::ios_base::beg);
 
         // В порядке нахождения в базе
         uint64_t id = 0;
@@ -126,7 +126,7 @@ public:
                 uint8_t b = 0;
                 for (int i = 0; i < c_size; ++i) {
                     if (i < size) iof.write((char*)&(array[i]), sizeof(array[i]));
-                    else iof.write((char*)&b, sizeof(b);
+                    else iof.write((char*)&b, sizeof(b));
                 }
 
 
